@@ -1,8 +1,13 @@
 package com.antake.ssm.dao;
 
+import com.antake.ssm.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface UserDao {
+    @Select("SELECT uid,username,`password`,salt,phone,email,reg_time,last_login_time,`status` FROM `user` where username=#{username}")
+    User getUser(@Param("username")String username);
 }
 

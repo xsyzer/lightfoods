@@ -1,20 +1,32 @@
 package com.antake.ssm.controller;
-
+import com.antake.ssm.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
 public class LoginController {
+    @Autowired
+    UserService userService;
     @PostMapping("/login")
     @ResponseBody
-    public ResponseEntity<Integer> login(@RequestBody Map<String,Object> params){
-        System.out.println(params);
-        return ResponseEntity.ok(1);
+    public ResponseEntity<Integer> login(@RequestBody Map<String,String> params, HttpSession session){
+        String username = params.get("username");
+        String password = params.get("password");
+        if (username==null || password==null || username.length() <5 || password.length() <5){
+            return ResponseEntity.ok(-101);
+        }
+        int result=userService.login(username,password);
+        if (result==101){
+            session.setAttribute("user",username);
+        }
+        return ResponseEntity.ok(result);
     }
 }
 
