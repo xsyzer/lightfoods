@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/util"
+       xmlns:content="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--配置数据源-->
+    <content:property-placeholder location="classpath:db.properties"/>
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
+        <property name="driverClassName" value="${driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbcUrl}"/>
+        <property name="username" value="${user}"/>
+        <property name="password" value="${password}"/>
+        <property name="readOnly" value="false"/>
+        <property name="connectionTimeout" value="30000"/>
+        <property name="idleTimeout" value="600000"/>
+        <property name="maxLifetime" value="1800000"/>
+        <property name="maximumPoolSize" value="60"/>
+        <property name="minimumIdle" value="10"/>
+     </bean>
+    <!--配置sql会话工厂-->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:mapper/*Mapper.xml"/>
+        <!--取别名-->
+        <property name="typeAliasesPackage" value="com.antake.ssm.pojo"/>
+        <!--映射日志文件-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!--spring-mybatis中配置mybatis 插件-->
+        <property name="plugins">
+            <set>
+                <!--配置pageHelper 分页插件-->
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <props>
+                            <!--方言：-->
+                            <prop key="helperDialect">mysql</prop>
+                        </props>
+                    </property>
+                </bean>
+            </set>
+        </property>
+    </bean>
+    <!--配置Mapper接口扫描器-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"/>
+        <property name="basePackage" value="com.antake.ssm.dao"/>
+        <property name="annotationClass" value="org.apache.ibatis.annotations.Mapper"/>
+    </bean>
+    <!--事务管理器-->
+
+    <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="enforceReadOnly" value="false"/>
+    </bean>
+    <!--事务管理器的切面配置（可以配置文件实现或注解）-->
+    <!--开启事务注解驱动-->
+    <tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>
+    <!--提供事务需要管理的方法-->
+    <!--<tx:advice id="transactionInterceptor" transaction-manager="dataSourceTransactionManager">
+        <tx:attributes>
+            <tx:method name="get*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="query*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="update*" propagation="REQUIRED" isolation="REPEATABLE_READ" rollback-for="java.lang.Exception"/>
+            <tx:method name="save*" propagation="REQUIRED" isolation="REPEATABLE_READ" rollback-for="java.lang.Exception"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="pc" expression="execution(* com.antake.ssm.service..*Impl.*(..))"/>
+        <aop:advisor advice-ref="transactionInterceptor" pointcut-ref="pc"/>
+    </aop:config>-->
+    <!--扫描Service-->
+    <content:component-scan base-package="com.antake.ssm.service">
+        <content:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+    </content:component-scan>
+</beans>
