@@ -1,12 +1,11 @@
 <template>
   <div>
-    管理界面
+    首页
   </div>
 </template>
-
 <script>
 export default {
-  name: 'Manage',
+  name: 'Index',
   data () {
     return{
 
