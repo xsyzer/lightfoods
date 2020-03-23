@@ -9,6 +9,9 @@
         <fileset id="fileset2" name="Spring Mybatis" removed="false">
           <file>file://$MODULE_DIR$/src/main/resources/spring-mybatis.xml</file>
         </fileset>
+        <fileset id="fileset3" name="Application" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/application.xml</file>
+        </fileset>
       </configuration>
     </facet>
   </component>
