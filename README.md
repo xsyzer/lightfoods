@@ -1,0 +1,9 @@
+# lightfoods
+VUE+SSM订餐系统
+
+#更新命令
+#idea/ws更新本地代码,在terminal里面执行
+git fetch origin reception
+git reset --hard origin/reception
+//git pull执行慢，可以直接用git pull
+git pull/git pull[开发平台直接pull-推荐]
