@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../components/Login'
-import Manage from '../components/Manage'
-import Index from "../components/index";
+import AdminManage from '../components/admin/Manage'
+import Index from "../components/index"
 
 Vue.use(Router)
 
@@ -19,9 +19,9 @@ export default new Router({
       component: Login
     },
     {
-      path: '/manage',
-      name: 'Manage',
-      component: Manage
+      path: '/adminManage',
+      name: 'AdminManage',
+      component: AdminManage
     }
   ]
 })

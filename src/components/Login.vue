@@ -21,30 +21,42 @@ export default {
       password:''
     }
   },
-  methods:{
-    login:function () {
-      let parent=this;
+  methods: {
+    login: function () {
+      let parent = this;
       this.$http({
-        url:'/api/login',
-        method:'post',
-        data:{
-          username:this.username,
-          password:this.password
+        url: '/api/login',
+        method: 'post',
+        data: {
+          username: this.username,
+          password: this.password
         }
       }).then(function (resp) {
-          if (resp.data==101) {
-            parent.$router.push({path: '/manage'})
-          }else {
-            let message="";
-            switch (resp.data) {
-              case -101:message="用户不存在";break;
-              case -102:message="用户密码错误";break;
-              case -103:message="用户被冻结";break;
-              case -104:message="用户异常";break;
-              default:break;
-            }
-            alert(message);
+        if (resp.data.code == 101) {
+          parent.$router.push({
+            name:resp.data.message,
+            params:{username:parent.username}
+          });
+        } else {
+          let message = "";
+          switch (resp.data.code) {
+            case -101:
+              message = "用户不存在";
+              break;
+            case -102:
+              message = "用户密码错误";
+              break;
+            case -103:
+              message = "用户被冻结";
+              break;
+            case -104:
+              message = "用户异常";
+              break;
+            default:
+              break;
           }
+          alert(message);
+        }
       });
     }
   }

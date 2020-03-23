@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div>
+      <strong>{{this.$route.params.username}}</strong>
+    </div>
     <input type="button" value="显示修改模态框" v-on:click="showUpdateModal()">
     <!--向修改模态框传参-->
     <update-modal :user="updateUser" :query="search"></update-modal>
@@ -7,10 +10,10 @@
 </template>
 
 <script>
-import UpdateModal from "./modal/UpdateModal";
+import UpdateModal from "../modal/UpdateModal";
 
 export default {
-  name: 'Manage',
+  name: 'AdminManage',
   components:{UpdateModal},//依赖项
   data () {
     return{
@@ -18,11 +21,11 @@ export default {
           username:'admin',
           password:'123456'
         },
-      updateUser:{}
+        updateUser:{}
     }
   },
   methods:{
-    showUpdateModal:function () {
+    showUpdateModal:function (){
       this.updateUser=JSON.parse(JSON.stringify(this.user));
       this.$modal.show("update-modal");
     },
