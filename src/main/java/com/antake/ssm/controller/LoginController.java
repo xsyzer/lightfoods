@@ -17,7 +17,7 @@ public class LoginController {
     @PostMapping("/login")
     @ResponseBody
     public ResponseEntity<Integer> login(@RequestBody Map<String,String> params, HttpSession session){
-        String username = params.get("username");
+        String username = params.get("username").trim();
         String password = params.get("password").trim();
         if (username==null || password==null || username.length() <5 || password.length() <5){
             return ResponseEntity.ok(-102);
