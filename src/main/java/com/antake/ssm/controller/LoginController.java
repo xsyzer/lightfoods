@@ -20,7 +20,7 @@ public class LoginController {
         String username = params.get("username");
         String password = params.get("password");
         if (username==null || password==null || username.length() <5 || password.length() <5){
-            return ResponseEntity.ok(-101);
+            return ResponseEntity.ok(-102);
         }
         int result=userService.login(username,password);
         if (result==101){
