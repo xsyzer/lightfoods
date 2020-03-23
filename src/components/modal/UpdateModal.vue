@@ -9,7 +9,7 @@
         用户名<input type="text" v-model="user.username" readonly>
       </div>
       <div>
-        密码<input type="text" v-model="user.passowrd">
+        密码<input type="text" v-model="user.password">
       </div>
     </div>
     <div class="modal-footer">
