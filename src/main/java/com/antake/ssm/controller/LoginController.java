@@ -5,6 +5,7 @@ import com.antake.ssm.util.ResponseJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,6 +17,11 @@ import java.util.Map;
 public class LoginController {
     @Autowired
     UserService userService;
+    //登录页面
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
     @PostMapping("/login")
     @ResponseBody
     public ResponseEntity<JSONObject> login(@RequestBody Map<String,String> params, HttpSession session){

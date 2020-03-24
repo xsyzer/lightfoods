@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>轻食订餐系统登录</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" media="screen" href="/static/css/style.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/reset.css"/>
+</head>
+<body>
+<div id="particles-js">
+		<div class="login">
+			<div class="login-top">
+				登录
+			</div>
+			<div class="login-center clearfix">
+				<div class="login-center-img"><img src="/static/img/name.png"/></div>
+				<div class="login-center-input">
+					<input type="text" v-model="username" placeholder="请输入您的用户名" onfocus="placeholder=''" onblur="placeholder='请输入您的用户名'"/>
+					<div class="login-center-input-text">用户名</div>
+				</div>
+			</div>
+			<div class="login-center clearfix">
+				<div class="login-center-img"><img src="/static/img/password.png"/></div>
+				<div class="login-center-input">
+					<input type="password"  v-model="password" placeholder="请输入您的密码" onfocus="placeholder=''" onblur="placeholder='请输入您的密码'"/>
+					<div class="login-center-input-text">密码</div>
+				</div>
+			</div>
+			<div class="login-button" @click="login">
+				登录
+			</div>
+		</div>
+		<div class="sk-rotating-plane"></div>
+</div>
+</body>
+<script src="/static/js/particles.min.js"></script>
+<script src="/static/js/app.js"></script>
+<script src="/static/js/axios.min.js"></script>
+<script type="text/javascript" src="/static/js/vue.js"></script>
+<script>
+	let app=new Vue({
+		el:'#particles-js',
+		data:{
+			username:'',
+			password:''
+		},
+		methods:{
+			login:function () {
+				axios({
+					url:'/login',
+					method:'post',
+					data:{
+						username:this.username,
+						password:this.password
+					},
+				}).then(function (resp) {
+					console.log(resp);
+					if (resp.data.code == 101) {
+						window.location.href="/admin/manage";
+					} else {
+						let message = "";
+						switch (resp.data.code) {
+							case -101:
+								message = "用户不存在";
+								break;
+							case -102:
+								message = "用户密码错误";
+								break;
+							case -103:
+								message = "用户被冻结";
+								break;
+							case -104:
+								message = "用户异常";
+								break;
+							default:
+								break;
+						}
+						alert(message);
+					}
+				});
+			}
+		}
+	});
+</script>
+</html>
