@@ -33,7 +33,7 @@ public class LoginController {
         int result=userService.login(username,password);
         if (result==101){
             session.setAttribute("user",username);
-            return ResponseEntity.ok(ResponseJson.respJson(101,"AdminManage"));
+            return ResponseEntity.ok(ResponseJson.respJson(101,"/"));
         }
         return ResponseEntity.ok(ResponseJson.respJson(result,""));
     }

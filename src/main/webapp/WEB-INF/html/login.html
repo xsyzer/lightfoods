@@ -36,7 +36,7 @@
 </body>
 <script src="/static/js/particles.min.js"></script>
 <script src="/static/js/app.js"></script>
-<script src="/static/js/axios.min.js"></script>
+<script src="/static/js/jquery-3.4.1.js"></script>
 <script type="text/javascript" src="/static/js/vue.js"></script>
 <script>
 	let app=new Vue({
@@ -47,36 +47,39 @@
 		},
 		methods:{
 			login:function () {
-				axios({
+				$.ajax({
 					url:'/login',
-					method:'post',
-					data:{
+					type:'post',
+					contentType:'application/json',
+					dataType:'json',
+					data:JSON.stringify({
 						username:this.username,
 						password:this.password
-					},
-				}).then(function (resp) {
-					console.log(resp);
-					if (resp.data.code == 101) {
-						window.location.href="/admin/manage";
-					} else {
-						let message = "";
-						switch (resp.data.code) {
-							case -101:
-								message = "用户不存在";
-								break;
-							case -102:
-								message = "用户密码错误";
-								break;
-							case -103:
-								message = "用户被冻结";
-								break;
-							case -104:
-								message = "用户异常";
-								break;
-							default:
-								break;
+					}),
+					success:function (data) {
+						if (data.code == 101) {
+							window.location.href=data.message;
+						} else {
+							let message = "";
+							switch (data.code) {
+								case -101:
+									message = "用户不存在";
+									break;
+								case -102:
+									message = "用户密码错误";
+									break;
+								case -103:
+									message = "用户被冻结";
+									break;
+								case -104:
+									message = "用户异常";
+									break;
+								default:
+									message="未知错误";
+									break;
+							}
+							alert(message);
 						}
-						alert(message);
 					}
 				});
 			}
