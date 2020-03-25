@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface UserDao {
@@ -39,6 +40,6 @@ public interface UserDao {
     @Select("SELECT permission.id,permission.`name`,permission.tag from `user` INNER JOIN user_role on `user`.uid=user_role.user_id INNER JOIN role_permission ON user_role.role_id=role_permission.role_id INNER JOIN permission on role_permission.perm_id=permission.id WHERE `user`.username=#{username}")
     List<Permission> findPermissionByUsername(@Param("username") String username);
 
-    int register(@Param("username")String username,@Param("password")  String password,@Param("phone")  String phone,@Param("email")  String email);
+    int register(@Param("params") Map<String, String> params);
 }
 

@@ -45,6 +45,11 @@ public class UserController {
     @PostMapping("/register")
     @ResponseBody
     public ResponseEntity<JSONObject> register(@RequestBody Map<String,String> params){
+        String username = params.get("username").trim();
+        String password = params.get("password").trim();
+        if ("".equals(username) || "".equals(password) || username.length()<5 || password.length()<5){
+            return ResponseEntity.ok(ResponseJson.respJson(-101,"用户注册请求参数异常"));
+        }
         return userService.register(params);
     }
 }

@@ -4,20 +4,20 @@
 <mapper namespace="com.antake.ssm.dao.UserDao">
     <insert id="register">
         INSERT INTO `user` (`username`, `password`, `salt`,
-        <if test="phone!='' and phone.length==0">
+        <if test="params.phone!='' and params.phone.length==0">
             `phone`,
         </if>
-        <if test="phone!='' and phone.length==0">
+        <if test="params.email!='' and params.phone.email==0">
             `email`,
         </if>
          `reg_time`)
         VALUES
-	    (#{username}, #{password}, '123456',
-        <if test="phone!='' and phone.length==0">
-            #{phone},
+	    (#{params.username}, #{params.password}, '123456',
+        <if test="params.phone!='' and params.phone.length==0">
+            #{params.phone},
         </if>
-        <if test="phone!='' and phone.length==0">
-            #{email},
+        <if test="params.email!='' and params.email.length==0">
+            #{params.email},
         </if>
 	     now())
     </insert>

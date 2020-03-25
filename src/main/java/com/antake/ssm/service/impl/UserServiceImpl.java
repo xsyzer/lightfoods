@@ -64,19 +64,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public ResponseEntity<JSONObject> register(Map<String, String> params) {
-        String username = params.get("username").trim();
-        String password = params.get("password").trim();
-        String phone = params.get("phone").trim();
-        String email = params.get("email").trim();
-        if ("".equals(username) || "".equals(password) || username.length()<5 || password.length()<5){
-            return ResponseEntity.ok(ResponseJson.respJson(-101,"用户注册请求参数异常"));
-        }
         //检查用户名存不存在
-        User user = userDao.getUser(username);
+        User user = userDao.getUser(params.get("username").toString().trim());
         if (user!=null){
             return ResponseEntity.ok(ResponseJson.respJson(-102,"用户名已存在"));
         }
-        int result=userDao.register(username,password,phone,email);
+        int result=userDao.register(params);
         if (result>0){
             return ResponseEntity.ok(ResponseJson.respJson(101,"注册成功"));
         }else {
