@@ -2,5 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.antake.ssm.dao.UserDao">
-
+    <insert id="register">
+        INSERT INTO `user` (`username`, `password`, `salt`,
+        <if test="phone!='' and phone.length==0">
+            `phone`,
+        </if>
+        <if test="phone!='' and phone.length==0">
+            `email`,
+        </if>
+         `reg_time`)
+        VALUES
+	    (#{username}, #{password}, '123456',
+        <if test="phone!='' and phone.length==0">
+            #{phone},
+        </if>
+        <if test="phone!='' and phone.length==0">
+            #{email},
+        </if>
+	     now())
+    </insert>
 </mapper>
